@@ -1,0 +1,62 @@
+apply plugin: 'eclipse'
+apply plugin: 'war'
+apply plugin: 'eclipse-wtp'
+
+//source code compatible to Java 1.6
+sourceCompatibility = 1.6
+
+//compile to Java 1.6
+targetCompatibility = 1.6
+
+def subVersionCode = 'A'
+//version for WebLogic deployment
+version = '1.0.0_r'
+
+//define the name of your war file
+def projectName = 'DemoJSF'
+
+dependencies {
+	compile "org.springframework:spring-aop:$springVersion"
+	compile "org.springframework:spring-context:$springVersion"
+	compile "org.springframework:spring-jdbc:$springVersion"
+	compile "org.springframework:spring-orm:$springVersion"
+	compile "org.springframework:spring-webmvc:$springVersion"
+	compile "org.springframework.data:spring-data-jpa:$springDataJpaVersion"
+	
+	compile "com.sun.faces:jsf-api:$mojarraVersion"
+	compile "com.sun.faces:jsf-impl:$mojarraVersion"
+	
+	compile 'org.springframework:spring-context-support:3.2.0.RELEASE'
+	compile "javax.servlet:jstl:1.2"
+	
+	providedCompile "javax.servlet:javax.servlet-api:$servletApiVersion"
+    providedCompile "javax.servlet.jsp:jsp-api:$jspApiVersion"
+    providedCompile "javax.el:javax.el-api:$jspElVersion"
+}
+
+repositories {
+	maven { url 'http://maven.springframework.org/release' }
+	maven { url 'http://maven.springframework.org/milestone' }
+	maven { url 'http://maven.springframework.org/snapshot' }
+	maven { url 'http://download.java.net/maven/2' }
+	mavenCentral()
+
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.1'
+}
+
+webAppDirName="WebContent"
+
+war {
+	archiveName projectName //projectName is variable
+}
+
+eclipse {
+        wtp {
+                component {
+                        contextPath = projectName
+                }
+        }
+}
